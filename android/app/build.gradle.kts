@@ -1,18 +1,21 @@
 plugins {
     id("com.android.application")
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services")
+    // END: FlutterFire Configuration
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
-    namespace = "com.example.deep_emotions_with_backend"
+    namespace = "com.elabdtech.deepEmotionsWithBackend"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973" // Updated NDK version
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-        isCoreLibraryDesugaringEnabled = true // Enable Java 8+ desugaring
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -20,16 +23,31 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.deep_emotions_with_backend"
-        minSdk = 23 // Updated minSdk from 21 to 23
+        applicationId = "com.elabdtech.deepEmotionsWithBackend"
+        minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("release-key.jks") // ⚠️ Path to your keystore
+            storePassword = "your_store_password" // 🔐 Replace with actual
+            keyAlias = "release"
+            keyPassword = "your_key_password" // 🔐 Replace with actual
+        }
+    }
+
     buildTypes {
-        release {
-            signingConfig = signingConfigs.getByName("debug")
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
@@ -39,6 +57,5 @@ flutter {
 }
 
 dependencies {
-    // Ensure correct version for desugar_jdk_libs to avoid conflicts
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "fir-integration-ee522"
-  }
+    "default": "fir-first-ff98b",
+    "staging": "fir-first-ff98b"
+  },
+  "targets": {},
+  "etags": {}
 }

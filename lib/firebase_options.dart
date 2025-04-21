@@ -41,13 +41,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAnyeeGEu8MKr7E5fferdsSRKZAtppIJcE',
-    appId: '1:557763112881:web:86d5da2d9fc0a8b0355790',
-    messagingSenderId: '557763112881',
-    projectId: 'fir-integration-ee522',
-    authDomain: 'fir-integration-ee522.firebaseapp.com',
-    storageBucket: 'fir-integration-ee522.firebasestorage.app',
-    measurementId: 'G-QD9246L8C2',
+    apiKey: 'AIzaSyCP3sg7ff-I95nvhgKOTSU3rV6O_3I2Zx0',
+    appId: '1:924599384579:web:1b1d3455061f146317ac36',
+    messagingSenderId: '924599384579',
+    projectId: 'fir-first-ff98b',
+    authDomain: 'fir-first-ff98b.firebaseapp.com',
+    storageBucket: 'fir-first-ff98b.firebasestorage.app',
+    measurementId: 'G-25HT18C6N4',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -59,31 +59,34 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAIEsZRMJFqHXRAMMFYzsOKXOHIWBcNjRI',
-    appId: '1:557763112881:ios:44a8b8b44285b88b355790',
-    messagingSenderId: '557763112881',
-    projectId: 'fir-integration-ee522',
-    storageBucket: 'fir-integration-ee522.firebasestorage.app',
-    iosBundleId: 'com.example.deepEmotionsWithBackend',
+    apiKey: 'AIzaSyCw6YLeunUciX9Q-PjjMmxptS0XUrhkv-k',
+    appId: '1:924599384579:ios:e72034945da209ba17ac36',
+    messagingSenderId: '924599384579',
+    projectId: 'fir-first-ff98b',
+    storageBucket: 'fir-first-ff98b.firebasestorage.app',
+    iosClientId:
+        '924599384579-fdgkqlcaet67cemtgsuvtuulcl5n4kpt.apps.googleusercontent.com',
+    iosBundleId: 'com.elabdtech.deepEmotionsWithBackend',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAIEsZRMJFqHXRAMMFYzsOKXOHIWBcNjRI',
-    appId: '1:557763112881:ios:44a8b8b44285b88b355790',
-    messagingSenderId: '557763112881',
-    projectId: 'fir-integration-ee522',
-    storageBucket: 'fir-integration-ee522.firebasestorage.app',
-    iosBundleId: 'com.example.deepEmotionsWithBackend',
+    apiKey: 'AIzaSyCw6YLeunUciX9Q-PjjMmxptS0XUrhkv-k',
+    appId: '1:924599384579:ios:e72034945da209ba17ac36',
+    messagingSenderId: '924599384579',
+    projectId: 'fir-first-ff98b',
+    storageBucket: 'fir-first-ff98b.firebasestorage.app',
+    iosClientId:
+        '924599384579-fdgkqlcaet67cemtgsuvtuulcl5n4kpt.apps.googleusercontent.com',
+    iosBundleId: 'com.elabdtech.deepEmotionsWithBackend',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAnyeeGEu8MKr7E5fferdsSRKZAtppIJcE',
-    appId: '1:557763112881:web:9b84412de2bfb31e355790',
-    messagingSenderId: '557763112881',
-    projectId: 'fir-integration-ee522',
-    authDomain: 'fir-integration-ee522.firebaseapp.com',
-    storageBucket: 'fir-integration-ee522.firebasestorage.app',
-    measurementId: 'G-2TDZMKR9Q0',
+    apiKey: 'AIzaSyCP3sg7ff-I95nvhgKOTSU3rV6O_3I2Zx0',
+    appId: '1:924599384579:web:eb3890329f3cb80317ac36',
+    messagingSenderId: '924599384579',
+    projectId: 'fir-first-ff98b',
+    authDomain: 'fir-first-ff98b.firebaseapp.com',
+    storageBucket: 'fir-first-ff98b.firebasestorage.app',
+    measurementId: 'G-D1GPRWWHDX',
   );
-
 }

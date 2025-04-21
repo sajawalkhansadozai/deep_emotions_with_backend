@@ -10,13 +10,12 @@
       },
       "dart": {
         "lib/firebase_options.dart": {
-          "projectId": "fir-integration-ee522",
+          "projectId": "fir-first-ff98b",
           "configurations": {
-            "android": "1:557763112881:android:c59f8fa4a2a95669355790",
-            "ios": "1:557763112881:ios:44a8b8b44285b88b355790",
-            "macos": "1:557763112881:ios:44a8b8b44285b88b355790",
-            "web": "1:557763112881:web:86d5da2d9fc0a8b0355790",
-            "windows": "1:557763112881:web:9b84412de2bfb31e355790"
+            "ios": "1:924599384579:ios:e72034945da209ba17ac36",
+            "macos": "1:924599384579:ios:e72034945da209ba17ac36",
+            "web": "1:924599384579:web:1b1d3455061f146317ac36",
+            "windows": "1:924599384579:web:eb3890329f3cb80317ac36"
           }
         }
       }
@@ -37,5 +36,9 @@
         "npm --prefix \"$RESOURCE_DIR\" run lint"
       ]
     }
-  ]
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
 }

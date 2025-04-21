@@ -1,4 +1,4 @@
-package com.example.deep_emotions_with_backend
+package com.elabdtech.deepEmotionsWithBackend
 
 import io.flutter.embedding.android.FlutterActivity
 
