@@ -4,6 +4,7 @@ import 'package:deep_emotions_with_backend/Screens/Reuseable_widget/bottom_line.
 import 'package:deep_emotions_with_backend/Screens/colors_and_other_constants/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // For SystemChrome
 import 'package:flutter_svg/svg.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../Reuseable_widget/heartRow.dart';
@@ -13,12 +14,14 @@ class VideoCard extends StatelessWidget {
   final String videoId;
   final Map<String, dynamic> video;
   final CommentProvider commentProvider;
+
   const VideoCard({
     super.key,
     required this.videoId,
     required this.video,
     required this.commentProvider,
   });
+
   @override
   Widget build(BuildContext context) {
     final title = video['title'] ?? 'No Title';
@@ -31,6 +34,7 @@ class VideoCard extends StatelessWidget {
     if (videoYTId == null) {
       return _buildErrorCard('Invalid YouTube URL for $title');
     }
+
     final controller = YoutubePlayerController(
       initialVideoId: videoYTId,
       flags: const YoutubePlayerFlags(autoPlay: false, mute: false),
@@ -55,13 +59,16 @@ class VideoCard extends StatelessWidget {
           builder: (context, likeSnapshot) {
             int likeCount =
                 likeSnapshot.hasData ? likeSnapshot.data!.docs.length : 0;
+
             bool isLiked = false;
             final currentUser = FirebaseAuth.instance.currentUser;
+
             if (currentUser != null && likeSnapshot.hasData) {
               isLiked = likeSnapshot.data!.docs.any(
                 (doc) => doc['userId'] == currentUser.uid,
               );
             }
+
             return GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -93,9 +100,14 @@ class VideoCard extends StatelessWidget {
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: YoutubePlayer(
-                        controller: controller,
-                        showVideoProgressIndicator: true,
+                      child: GestureDetector(
+                        onTap: () {
+                          _showFullScreenVideo(context, controller);
+                        },
+                        child: YoutubePlayer(
+                          controller: controller,
+                          showVideoProgressIndicator: true,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -124,6 +136,73 @@ class VideoCard extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _showFullScreenVideo(
+    BuildContext context,
+    YoutubePlayerController controller,
+  ) {
+    // Hide system UI (status bar and navigation bar)
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute(
+            fullscreenDialog: true, // Make it a full-screen dialog
+            builder:
+                (context) => WillPopScope(
+                  onWillPop: () async {
+                    // Restore system UI before popping the route
+                    SystemChrome.setEnabledSystemUIMode(
+                      SystemUiMode.edgeToEdge,
+                    );
+                    return true;
+                  },
+                  child: Scaffold(
+                    backgroundColor: Colors.black, // Set background to black
+                    body: Stack(
+                      children: [
+                        // Full-screen YouTube player
+                        Center(
+                          child: YoutubePlayer(
+                            controller: controller,
+                            showVideoProgressIndicator: true,
+                            onReady: () {
+                              controller.play();
+                            },
+                            bottomActions: [
+                              CurrentPosition(),
+                              ProgressBar(isExpanded: true),
+                              RemainingDuration(),
+                              FullScreenButton(), // Optional: Keep full-screen toggle in player controls
+                            ],
+                          ),
+                        ),
+                        // Optional: Add a close button in the top-left corner
+                        Positioned(
+                          top: 20,
+                          left: 20,
+                          child: IconButton(
+                            icon: const Icon(Icons.close, color: Colors.white),
+                            onPressed: () {
+                              // Restore system UI and pop the route
+                              SystemChrome.setEnabledSystemUIMode(
+                                SystemUiMode.edgeToEdge,
+                              );
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+          ),
+        )
+        .then((_) {
+          // Ensure the system UI is restored when exiting full-screen
+          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+        });
   }
 
   Widget _buildProfileHeader(
@@ -205,6 +284,7 @@ class VideoCard extends StatelessWidget {
           );
           return;
         }
+
         final likeDoc =
             await FirebaseFirestore.instance
                 .collection('Likes')
@@ -302,10 +382,9 @@ class VideoCard extends StatelessWidget {
 
   void _showCommentBottomSheet(BuildContext context) {
     final TextEditingController _commentController = TextEditingController();
-
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // This is important for keyboard handling
+      isScrollControlled: true, // Important for keyboard handling
       backgroundColor: Colors.transparent,
       builder:
           (context) => Padding(
@@ -319,7 +398,7 @@ class VideoCard extends StatelessWidget {
               constraints: BoxConstraints(
                 maxHeight:
                     MediaQuery.of(context).size.height *
-                    0.6, // Increased height to accommodate keyboard
+                    0.6, // Adjust height for keyboard
               ),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
@@ -333,7 +412,7 @@ class VideoCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Header with close button
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   BottomLine(),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
@@ -387,6 +466,7 @@ class VideoCard extends StatelessWidget {
                             ),
                           );
                         }
+
                         final comments = snapshot.data!.docs;
                         return ListView.builder(
                           physics: const BouncingScrollPhysics(),
@@ -490,7 +570,6 @@ class VideoCard extends StatelessWidget {
                                       'userAvatar': currentUser['avatar'] ?? '',
                                     });
                                 _commentController.clear();
-                                // Don't unfocus here to keep keyboard visible
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -526,6 +605,7 @@ class VideoCard extends StatelessWidget {
   Future<Map<String, dynamic>?> _getCurrentUser() async {
     final User? firebaseUser = FirebaseAuth.instance.currentUser;
     if (firebaseUser == null) return null;
+
     final DocumentSnapshot userDoc =
         await FirebaseFirestore.instance
             .collection('Users')
